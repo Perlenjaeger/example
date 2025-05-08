@@ -22,14 +22,12 @@ jobs:
         python-version: '3.8' # Ensure this matches your pyproject.toml
 
     - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        export PATH="$HOME/.local/bin:$PATH"
+      uses: snok/install-poetry@v1
+      with:
+        poetry-version: 2.1.3 # Specify the version of Poetry to install
 
     - name: Install dependencies with Poetry
-      run: |
-        poetry install
+      run: poetry install
 
     - name: Run tests with Poetry
-      run: |
-        poetry run pytest
+      run: poetry run pytest
