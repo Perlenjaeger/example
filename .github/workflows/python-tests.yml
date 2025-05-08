@@ -23,8 +23,6 @@ jobs:
 
     - name: Install Poetry
       uses: snok/install-poetry@v1
-      with:
-        version: 2.1.3 # Specify the version of Poetry to install
 
     - name: Debug Poetry Installation
       if: failure()
