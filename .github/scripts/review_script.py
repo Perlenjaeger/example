@@ -20,7 +20,15 @@ def get_diff(base_ref, head_ref):
         return None
 
 def call_ai_review(diff_content):
-    prompt = f"""Review the following code changes in diff format.\nIdentify severe code smells, potential bugs, performance issues, or maintainability problems.\nAlso, evaluate if these changes likely require an update to the README.md file.\nProvide your findings in a structured format, preferably JSON.\n\nCode Diff:\n```diff\n{diff_content}\n```"""
+    prompt = f"""Review the following code changes in diff format.
+Identify severe code smells, potential bugs, performance issues, or maintainability problems.
+Also, evaluate if these changes likely require an update to the README.md file.
+Provide your findings in Markdown format.
+
+Code Diff:
+```diff
+{diff_content}
+```"""
     headers = {
         "Authorization": f"Bearer {AI_API_KEY}",
         "Content-Type": "application/json"
@@ -32,7 +40,8 @@ def call_ai_review(diff_content):
     try:
         response = requests.post(AI_API_URL, headers=headers, json=data)
         response.raise_for_status()
-        return response.json()
+        response_json = response.json()
+        return response_json.get("choices", [{}])[0].get("message", {}).get("content", "")  # Extract content field
     except requests.exceptions.RequestException as e:
         print(f"Error calling AI API: {e}")
         return None
