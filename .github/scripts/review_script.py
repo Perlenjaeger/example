@@ -71,7 +71,10 @@ def main():
         post_pr_comment(REPO, PR_NUMBER, "Review bot failed to get response from AI API.")
         exit(1)
 
-    ai_response_text = ai_response.get('choices', [{}])[0].get('message', {}).get('content', 'No AI response content.')
+    ai_response_text = ai_response.strip() if isinstance(ai_response, str) else "No findings found."
+    if not ai_response_text:
+        ai_response_text = "No findings found."
+
     post_pr_comment(REPO, PR_NUMBER, ai_response_text)
 
 if __name__ == "__main__":
